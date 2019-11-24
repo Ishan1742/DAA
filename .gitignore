@@ -1,0 +1,6 @@
+/ahocorasick/*.txt
+/ahocorasick/*.o
+/tests/text-length/*.txt
+/tests/pattern-length/*.txt
+/tests/pattern-count/*.txt
+/.vscode
