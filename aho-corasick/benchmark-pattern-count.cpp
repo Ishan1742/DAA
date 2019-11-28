@@ -34,18 +34,22 @@ int main(int argc, char** argv) {
             patterns.insert(a);
         }
         vector<string> pattern_vector(patterns.begin(), patterns.end());
-	    trie t;
+	    auto start_time = chrono::high_resolution_clock::now();
+		auto end_time = chrono::high_resolution_clock::now();
+		auto time_1 = end_time - start_time;
+
+        start_time = chrono::high_resolution_clock::now();
+        trie t;
 	    for (auto& pattern : patterns) 
         {
 		    t.insert(pattern);
 	    }
 
         cout << "Running loop: " + to_string(i);
-		auto start_time = chrono::high_resolution_clock::now();
-		auto end_time = chrono::high_resolution_clock::now();
-		auto time_1 = end_time - start_time;
+		// auto start_time = chrono::high_resolution_clock::now();
+		// auto end_time = chrono::high_resolution_clock::now();
+		// auto time_1 = end_time - start_time;
 
-		start_time = chrono::high_resolution_clock::now();
 		size_t count_2 = bench_aho_corasick(text, t);
 		end_time = chrono::high_resolution_clock::now();
 		auto time_2 = end_time - start_time;
