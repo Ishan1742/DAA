@@ -31,7 +31,7 @@ plt.plot(a1,b1, label='Rabin Karp')
 plt.plot(c1,d1, label='Linear Graph y=2.5*x')
 plt.xlabel('Size (x * 10^4 characters)')
 plt.ylabel('Time (ms)')
-plt.title('Increasing Input Length')
+plt.title('Increasing Text Length')
 plt.legend()
 plt.show()
 
