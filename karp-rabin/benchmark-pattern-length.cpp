@@ -12,6 +12,29 @@ long long int hash_func(string pattern, int prime, int multiplier, int limit)
     return hash;
 }
 
+std::vector<long long> PrecomputeHashes(string T, int k, int p, int x) 
+{
+    int lenT = T.length();
+    std::vector<long long> H;
+    string S = T.substr(0, k);
+    H.push_back(hash_func(S, p, x, k));
+    //cout<<S<<" "<<H[0]<<"\n";
+    long long y = 1; 
+    for (int i = 0; i < k - 1; i++)
+        y = (y * x) % p;
+    //cout<<y<<"\n\n";
+    for (int i = 1; i < lenT - k + 1; i++)
+    {   
+        //cout<<H[i-1]<<" "<<T[i-1]<<" "<<T[i+k-1]<<"\n";
+        long long int val = (x * (H[i-1] - T[i - 1]*y) + T[i + k - 1])%p;
+        if(val < 0)
+            val = val + p;
+        H.push_back(val);
+    }
+    //cout<<"\n";
+    return H;
+}
+
 long long int bench_rabin_karp(string text_string, vector<string> patterns) {
 	long long int count = 0;
     
@@ -47,15 +70,13 @@ long long int bench_rabin_karp(string text_string, vector<string> patterns) {
 
     //cout<<"\n";
 
-    for(long long int i = 0; i < text_string.length() - k + 1; i++)
+    std::vector<long long> H = PrecomputeHashes(text_string, k, p, x);
+    for (size_t i = 0; i <= text_string.length() - k; ++i) 
     {
-        long long int tHash = hash_func(text_string.substr(i, k), p, x, k);
-
-        //cout<<tHash<<" "<<text_string.substr(i, k)<<"\n";
-
-        if( pattern_hash.find(tHash) != pattern_hash.end())
+        //cout<<H[i]<<" "<<text_string.substr(i, k)<<" ""\n";
+        if( pattern_hash.find(H[i]) != pattern_hash.end())
         {
-            vector<string> match = pattern_hash[tHash];
+            vector<string> match = pattern_hash[H[i]];
             for(int j=0; j<match.size(); j++)
             {
                 //cout<<match[j]<<" "<<text_string.substr(i, match[j].length())<<"\n";
@@ -119,6 +140,17 @@ int main(int argc, char** argv) {
         fout<<to_string((i.first+1)*2) << ", "<< chrono::duration_cast<chrono::milliseconds>(get<1>(i.second)).count() << endl;
 	}
     fout.close();
+
+    // string text = "GEEKS FOR GEEKS";
+    // vector<string> pattern;
+    // pattern.push_back("GEEKS");
+    // pattern.push_back("FOR");
+    // pattern.push_back("ABCD");
+    // pattern.push_back("EEKS");
+
+    // int count = bench_rabin_karp(text, pattern);
+
+    // cout<<count<<"\n";
 
 	return 0;
 }
