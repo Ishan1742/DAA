@@ -44,7 +44,7 @@ long long int bench_rabin_karp(string text_string, vector<string> patterns) {
     int k = INT_MAX;
     for(int i=0; i<patterns.size(); i++)
     {
-        if(patterns[i].length() < k)
+        if(patterns[i].length() < k && patterns[i].length() != 0)
             k = patterns[i].length();
     }
 
